@@ -44,8 +44,18 @@ class GameBox extends Component{
         return arrayOfColumns
     }
 
+    getDiagonalArray1(){
+        const arrayDiagonal1 = [this.state.cells[0].value, this.state.cells[4].value, this.state.cells[8].value ]
+        return arrayDiagonal1;
+    }
+    getDiagonalArray2(){
+        const arrayDiagonal2 = [this.state.cells[2].value, this.state.cells[4].value, this.state.cells[6].value ]
+        return arrayDiagonal2;
+    }
+
+
     getWinner(){
-        const allCombosArray = [...this.getArrayOfColumns(), ...this.getArrayOfRows()]
+        const allCombosArray = [...this.getArrayOfColumns(), ...this.getArrayOfRows(), this.getDiagonalArray1(), ...this.getDiagonalArray2()]
         // this.allCombosArray.push(this.arrayOfColumns())
         // this.allCombosArray.push(this.arrayOfRows())
         console.log(allCombosArray);
