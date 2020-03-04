@@ -9,16 +9,25 @@ class GameBox extends Component{
             player1Moved: false,
             player2Moved: true,
             cells: [
-                {R1C1: '', isPlayable: true}, {R1C2: '', isPlayable: true}, {R1C3: '', isPlayable: true}
+                {id: 'R1C1', value: '', isPlayable: true}, {id: 'R1C2', value: '', isPlayable: true}, {id: 'R1C3', value: '', isPlayable: true}
             ]
         }
+        this.handleCellClick = this.handleCellClick.bind(this)
+    }
+
+
+    handleCellClick(id){   
+
+        const newCells = this.state.cells.map(cell => {
+            return (cell.id === id) ? {...cell, isPlayable: false, value: 'X'} : cell;
+        });
+
+        this.setState({cells: newCells})
     }
 
     render(){
         const createCells = this.state.cells.map(cell => {
-            const cellId = Object.keys(cell)[0]
-            const cellValue = Object.values(cell)[0]
-            return <CellItem key={cellId} valueCell={cellValue}></CellItem>
+            return <CellItem key={cell.id} cellID={cell.id} onCellClick={this.handleCellClick}></CellItem>
         })
 
         return(

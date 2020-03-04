@@ -13,7 +13,8 @@ class CellItem extends Component{
     handleClick(event) {
         this.setState({value: true}, 
             () => {
-            console.log(this.props.valueCell);
+            console.log(this.props.cellID);
+            this.props.onCellClick(this.props.cellID);
         })
         
     }
