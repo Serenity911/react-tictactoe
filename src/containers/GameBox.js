@@ -15,20 +15,31 @@ class GameBox extends Component{
         this.whoIsCurrentPlayer = this.whoIsCurrentPlayer.bind(this)
     }
 
-    handleCellClick(id){   
+
+    handleNextTurn(){
         const currentPlayer = this.whoIsCurrentPlayer()
+
+        const nextTurnPlayers = this.state.players.map( player => {
+            return (player === currentPlayer) ? {...player, isCurrentPlayer: false} : {...player, isCurrentPlayer: true};
+        })
+
+        this.setState({players: nextTurnPlayers})   
+    }
+
+    handleUpdateCell(id){
+        const currentPlayer = this.whoIsCurrentPlayer()
+
         const symbolOfCurrentPlayer = currentPlayer.symbol
         
         const newCells = this.state.cells.map(cell => {
             return (cell.id === id) ? {...cell, isPlayable: false, value: `${symbolOfCurrentPlayer}`} : cell;
         });
         this.setState({cells: newCells})
+    }
 
-        const nextTurnPlayers = this.state.players.map( player => {
-            return (player === currentPlayer) ? {...player, isCurrentPlayer: false} : {...player, isCurrentPlayer: true};
-        })
-
-        this.setState({players: nextTurnPlayers})        
+    handleCellClick(id){   
+        this.handleUpdateCell(id)
+        this.handleNextTurn()
     }
     
     whoIsCurrentPlayer(){
