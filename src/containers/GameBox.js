@@ -9,7 +9,7 @@ class GameBox extends Component{
             winner: '',
             players: [ {id: "player1", symbol: "X", isCurrentPlayer: true }, {id: "player2", symbol: "O", isCurrentPlayer: false }],            
             cells: [
-                {id: 'R1C1', value: '', isPlayable: true}, {id: 'R1C2', value: '', isPlayable: true}, {id: 'R1C3', value: '', isPlayable: true}, 
+                {id: 'R1C1', value: '', isPlayable: true}, {id: 'R1C2', value: '', isPlayable: true}, {id: 'R1C3', value: '', isPlayable: true},
                 
                 {id: 'R2C1', value: '', isPlayable: true}, {id: 'R2C2', value: '', isPlayable: true}, {id: 'R2C3', value: '', isPlayable: true}, 
                 
@@ -60,19 +60,22 @@ class GameBox extends Component{
         const allCombosArray = [...this.getArrayOfColumns(), ...this.getArrayOfRows(), this.getDiagonalArray1(), ...this.getDiagonalArray2()]
         // this.allCombosArray.push(this.arrayOfColumns())
         // this.allCombosArray.push(this.arrayOfRows())
-        console.log(allCombosArray);
+        // console.log(allCombosArray);
+        console.log("get winner is called")
         
 
         for (const row of allCombosArray) {
-            console.log(row);
+            // console.log(row);
             
             if (row.includes("X") && !row.includes("O") && !row.includes("")){
                 console.log("Player1 won");   
                 this.setState({winner: "player1"})
+                // this.checkWinner()
             }
             if(row.includes("O") && !row.includes("X") && !row.includes("")){
                 console.log("Player2 won");   
                 this.setState({winner: "player2"})
+                // this.checkWinner()
 
             }
         }
@@ -112,7 +115,7 @@ class GameBox extends Component{
         this.setState({players: nextTurnPlayers})   
     }
 
-    handleUpdateCell(id){
+    handleCellClick(id){
         const currentPlayer = this.whoIsCurrentPlayer()
 
         const symbolOfCurrentPlayer = currentPlayer.symbol
@@ -120,13 +123,13 @@ class GameBox extends Component{
         const newCells = this.state.cells.map(cell => {
             return (cell.id === id) ? {...cell, isPlayable: false, value: `${symbolOfCurrentPlayer}`} : cell;
         });
-        this.setState({cells: newCells})
+        this.setState({cells: newCells}, () => this.cellPostClick())
+        
     }
 
-    handleCellClick(id){   
-        this.handleUpdateCell(id)
-        this.handleNextTurn()
+    cellPostClick(){
         this.getWinner()
+        this.handleNextTurn()
     }
     
     whoIsCurrentPlayer(){
@@ -150,7 +153,7 @@ class GameBox extends Component{
             <div className="containerOfCells">
             {createCells}
             </div>
-        <h3>Winner is: {this.checkWinner()}</h3>
+        <h3>Winner is: {this.state.winner}</h3>
             </Fragment>
         )
     }
