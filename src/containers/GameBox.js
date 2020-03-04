@@ -7,12 +7,12 @@ class GameBox extends Component{
         super(props)
         this.state = {
             winner: '',
-            players: [ {id: "player1", symbol: "X", isCurrentPlayer: true }, {id: "player2", symbol: "O", isCurrentPlayer: false }],            
+            players: [ {id: "player1", symbol: "X", isCurrentPlayer: true }, {id: "player2", symbol: "O", isCurrentPlayer: false }],
             cells: [
                 {id: 'R1C1', value: '', isPlayable: true}, {id: 'R1C2', value: '', isPlayable: true}, {id: 'R1C3', value: '', isPlayable: true},
-                
-                {id: 'R2C1', value: '', isPlayable: true}, {id: 'R2C2', value: '', isPlayable: true}, {id: 'R2C3', value: '', isPlayable: true}, 
-                
+
+                {id: 'R2C1', value: '', isPlayable: true}, {id: 'R2C2', value: '', isPlayable: true}, {id: 'R2C3', value: '', isPlayable: true},
+
                 {id: 'R3C1', value: '', isPlayable: true}, {id: 'R3C2', value: '', isPlayable: true}, {id: 'R3C3', value: '', isPlayable: true}
             ]
         }
@@ -32,7 +32,7 @@ class GameBox extends Component{
             let arrayRow = [this.state.cells[i].value, this.state.cells[i+1].value, this.state.cells[i+2].value]
             arrayOfRows.push(arrayRow)
         }
-        return arrayOfRows 
+        return arrayOfRows
     }
 
     getArrayOfColumns(){
@@ -40,9 +40,9 @@ class GameBox extends Component{
         for(let i = 0; i <= 2 ; i ++){
             // 0, 3, 6
 
-            let arrayColumn = [this.state.cells[i].value, this.state.cells[i+3].value]
+            let arrayColumn = [this.state.cells[i].value, this.state.cells[i+3].value, this.state.cells[i+6].value]
             arrayOfColumns.push(arrayColumn)
-        }        
+        }
         return arrayOfColumns
     }
 
@@ -57,26 +57,24 @@ class GameBox extends Component{
 
 
     getWinner(){
-        const allCombosArray = [...this.getArrayOfColumns(), ...this.getArrayOfRows(), this.getDiagonalArray1(), ...this.getDiagonalArray2()]
+        const allCombosArray = [...this.getArrayOfColumns(), ...this.getArrayOfRows(), this.getDiagonalArray1(), this.getDiagonalArray2()]
         // this.allCombosArray.push(this.arrayOfColumns())
         // this.allCombosArray.push(this.arrayOfRows())
         // console.log(allCombosArray);
         console.log("get winner is called")
-        
+
 
         for (const row of allCombosArray) {
             // console.log(row);
-            
+
             if (row.includes("X") && !row.includes("O") && !row.includes("")){
-                console.log("Player1 won");   
+                console.log("Player1 won");
                 this.setState({winner: "player1"})
                 // this.checkWinner()
             }
             if(row.includes("O") && !row.includes("X") && !row.includes("")){
-                console.log("Player2 won");   
+                console.log("Player2 won");
                 this.setState({winner: "player2"})
-                // this.checkWinner()
-
             }
         }
 
@@ -97,10 +95,10 @@ class GameBox extends Component{
 
     // getFirstRowWinner(){
     //     if (this.getFirstRowValues().includes("X") && !this.getFirstRowValues().includes("O") && !this.getFirstRowValues().includes("")){
-    //         console.log("Player1 won");   
+    //         console.log("Player1 won");
     //     }
     //     if(this.getFirstRowValues().includes("O") && !this.getFirstRowValues().includes("X") && !this.getFirstRowValues().includes("")){
-    //         console.log("Player2 won");   
+    //         console.log("Player2 won");
 
     //     }
     // }
@@ -112,30 +110,30 @@ class GameBox extends Component{
             return (player === currentPlayer) ? {...player, isCurrentPlayer: false} : {...player, isCurrentPlayer: true};
         })
 
-        this.setState({players: nextTurnPlayers})   
+        this.setState({players: nextTurnPlayers})
     }
 
     handleCellClick(id){
         const currentPlayer = this.whoIsCurrentPlayer()
 
         const symbolOfCurrentPlayer = currentPlayer.symbol
-        
+
         const newCells = this.state.cells.map(cell => {
             return (cell.id === id) ? {...cell, isPlayable: false, value: `${symbolOfCurrentPlayer}`} : cell;
         });
         this.setState({cells: newCells}, () => this.cellPostClick())
-        
+
     }
 
     cellPostClick(){
         this.getWinner()
         this.handleNextTurn()
     }
-    
+
     whoIsCurrentPlayer(){
         for (let player of this.state.players) {
             if (player.isCurrentPlayer === true) {
-                return player; 
+                return player;
             }
         }
     }
