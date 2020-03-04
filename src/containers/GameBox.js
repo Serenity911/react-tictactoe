@@ -40,7 +40,7 @@ class GameBox extends Component{
         for(let i = 0; i <= 2 ; i ++){
             // 0, 3, 6
 
-            let arrayColumn = [this.state.cells[i].value, this.state.cells[i+3].value]
+            let arrayColumn = [this.state.cells[i].value, this.state.cells[i+3].value, this.state.cells[i+6].value]
             arrayOfColumns.push(arrayColumn)
         }        
         return arrayOfColumns
@@ -57,7 +57,7 @@ class GameBox extends Component{
 
 
     getWinner(){
-        const allCombosArray = [...this.getArrayOfColumns(), ...this.getArrayOfRows(), this.getDiagonalArray1(), ...this.getDiagonalArray2()]
+        const allCombosArray = [...this.getArrayOfColumns(), ...this.getArrayOfRows(), this.getDiagonalArray1(), this.getDiagonalArray2()]
         // this.allCombosArray.push(this.arrayOfColumns())
         // this.allCombosArray.push(this.arrayOfRows())
         console.log(allCombosArray);
@@ -73,7 +73,6 @@ class GameBox extends Component{
             if(row.includes("O") && !row.includes("X") && !row.includes("")){
                 console.log("Player2 won");   
                 this.setState({winner: "player2"})
-
             }
         }
 
