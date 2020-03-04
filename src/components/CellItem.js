@@ -22,7 +22,7 @@ class CellItem extends Component{
     render() {
         return(
             <div onClick={this.handleClick} >
-                <p>Cell</p>
+                <p>{this.props.cellValue}</p>
             </div>
         )
     }

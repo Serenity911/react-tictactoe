@@ -8,15 +8,20 @@ class GameBox extends Component{
             winner: '',
             players: [ {id: "player1", symbol: "X", isCurrentPlayer: true }, {id: "player2", symbol: "O", isCurrentPlayer: false }],            
             cells: [
-                {id: 'R1C1', value: '', isPlayable: true}, {id: 'R1C2', value: '', isPlayable: true}, {id: 'R1C3', value: '', isPlayable: true}, {id: 'R2C1', value: '', isPlayable: true}, {id: 'R2C2', value: '', isPlayable: true}, {id: 'R2C3', value: '', isPlayable: true}, {id: 'R3C1', value: '', isPlayable: true}, {id: 'R3C2', value: '', isPlayable: true}, {id: 'R3C3', value: '', isPlayable: true}
+                {id: 'R1C1', value: '', isPlayable: true}, {id: 'R1C2', value: '', isPlayable: true}, {id: 'R1C3', value: '', isPlayable: true}, 
+                
+                {id: 'R2C1', value: '', isPlayable: true}, {id: 'R2C2', value: '', isPlayable: true}, {id: 'R2C3', value: '', isPlayable: true}, 
+                
+                {id: 'R3C1', value: '', isPlayable: true}, {id: 'R3C2', value: '', isPlayable: true}, {id: 'R3C3', value: '', isPlayable: true}
             ]
         }
         this.handleCellClick = this.handleCellClick.bind(this)
         this.whoIsCurrentPlayer = this.whoIsCurrentPlayer.bind(this)
-        this.getFirstRowValues = this.getFirstRowValues.bind(this)
-        this.getFirstRowWinner = this.getFirstRowWinner.bind(this)
+        // this.getFirstRowValues = this.getFirstRowValues.bind(this)
+        // this.getFirstRowWinner = this.getFirstRowWinner.bind(this)
         // this.getEachRow = this.getEachRow.bind(this)
-        this.getRowsWinner = this.getRowsWinner.bind(this)
+        this.getWinner = this.getWinner.bind(this)
+        this.getArrayOfColumns = this.getArrayOfColumns.bind(this)
     }
 
     getArrayOfRows(){
@@ -28,8 +33,25 @@ class GameBox extends Component{
         return arrayOfRows 
     }
 
-    getRowsWinner(){
-        for (const row of this.getArrayOfRows()) {
+    getArrayOfColumns(){
+        const arrayOfColumns = []
+        for(let i = 0; i <= 2 ; i ++){
+            // 0, 3, 6
+
+            let arrayColumn = [this.state.cells[i].value, this.state.cells[i+3].value]
+            arrayOfColumns.push(arrayColumn)
+        }        
+        return arrayOfColumns
+    }
+
+    getWinner(){
+        const allCombosArray = [...this.getArrayOfColumns(), ...this.getArrayOfRows()]
+        // this.allCombosArray.push(this.arrayOfColumns())
+        // this.allCombosArray.push(this.arrayOfRows())
+        console.log(allCombosArray);
+        
+
+        for (const row of allCombosArray) {
             console.log(row);
             
             if (row.includes("X") && !row.includes("O") && !row.includes("")){
@@ -42,24 +64,24 @@ class GameBox extends Component{
 
     }
 
-    getFirstRowValues(){
-        const firstRowValue = this.state.cells.map( (item, index) => {
-            if(index <=2){
-                return item.value
-            }
-        })
-        return firstRowValue
-    }
+    // getFirstRowValues(){
+    //     const firstRowValue = this.state.cells.map( (item, index) => {
+    //         if(index <=2){
+    //             return item.value
+    //         }
+    //     })
+    //     return firstRowValue
+    // }
 
-    getFirstRowWinner(){
-        if (this.getFirstRowValues().includes("X") && !this.getFirstRowValues().includes("O") && !this.getFirstRowValues().includes("")){
-            console.log("Player1 won");   
-        }
-        if(this.getFirstRowValues().includes("O") && !this.getFirstRowValues().includes("X") && !this.getFirstRowValues().includes("")){
-            console.log("Player2 won");   
+    // getFirstRowWinner(){
+    //     if (this.getFirstRowValues().includes("X") && !this.getFirstRowValues().includes("O") && !this.getFirstRowValues().includes("")){
+    //         console.log("Player1 won");   
+    //     }
+    //     if(this.getFirstRowValues().includes("O") && !this.getFirstRowValues().includes("X") && !this.getFirstRowValues().includes("")){
+    //         console.log("Player2 won");   
 
-        }
-    }
+    //     }
+    // }
 
     handleNextTurn(){
         const currentPlayer = this.whoIsCurrentPlayer()
@@ -97,14 +119,14 @@ class GameBox extends Component{
 
     render(){
         const createCells = this.state.cells.map(cell => {
-            return <CellItem key={cell.id} cellID={cell.id} onCellClick={this.handleCellClick}></CellItem>
+            return <CellItem key={cell.id} cellID={cell.id} cellValue={cell.value} onCellClick={this.handleCellClick}></CellItem>
         })
 
         return(
             <Fragment>
             <h2> Which player is playing? {this.whoIsCurrentPlayer().id}</h2>
             <p>HELLO I AM THE BOX</p>
-            <button onClick={this.getRowsWinner}></button>
+            <button onClick={this.getWinner}></button>
             {createCells}
             </Fragment>
         )
