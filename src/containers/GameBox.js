@@ -18,7 +18,7 @@ class GameBox extends Component{
         const createCells = this.state.cells.map(cell => {
             const cellId = Object.keys(cell)[0]
             const cellValue = Object.values(cell)[0]
-            return <CellItem key={cellId}>{cellValue}</CellItem>
+            return <CellItem key={cellId} valueCell={cellValue}></CellItem>
         })
 
         return(
