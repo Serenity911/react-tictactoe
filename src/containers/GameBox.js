@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import CellItem from '../components/CellItem.js'
+import "./GameBox.css"
 
 class GameBox extends Component{
     constructor(props){
@@ -22,6 +23,7 @@ class GameBox extends Component{
         // this.getEachRow = this.getEachRow.bind(this)
         this.getWinner = this.getWinner.bind(this)
         this.getArrayOfColumns = this.getArrayOfColumns.bind(this)
+        this.checkWinner = this.checkWinner.bind(this)
     }
 
     getArrayOfRows(){
@@ -66,12 +68,19 @@ class GameBox extends Component{
             
             if (row.includes("X") && !row.includes("O") && !row.includes("")){
                 console.log("Player1 won");   
+                this.setState({winner: "player1"})
             }
             if(row.includes("O") && !row.includes("X") && !row.includes("")){
                 console.log("Player2 won");   
+                this.setState({winner: "player2"})
+
             }
         }
 
+    }
+
+    checkWinner(){
+        return this.state.winner;
     }
 
     // getFirstRowValues(){
@@ -117,6 +126,7 @@ class GameBox extends Component{
     handleCellClick(id){   
         this.handleUpdateCell(id)
         this.handleNextTurn()
+        this.getWinner()
     }
     
     whoIsCurrentPlayer(){
@@ -137,7 +147,10 @@ class GameBox extends Component{
             <h2> Which player is playing? {this.whoIsCurrentPlayer().id}</h2>
             <p>HELLO I AM THE BOX</p>
             <button onClick={this.getWinner}></button>
+            <div className="containerOfCells">
             {createCells}
+            </div>
+        <h3>Winner is: {this.checkWinner()}</h3>
             </Fragment>
         )
     }
