@@ -6,23 +6,30 @@ class GameBox extends Component{
         super(props)
         this.state = {
             winner: '',
-            player1Moved: false,
-            player2Moved: true,
+            players: [ {id: "player1", symbol: "X", isCurrentPlayer: true }, {id: "player2", symbol: "O", isCurrentPlayer: false }],            
             cells: [
                 {id: 'R1C1', value: '', isPlayable: true}, {id: 'R1C2', value: '', isPlayable: true}, {id: 'R1C3', value: '', isPlayable: true}
             ]
         }
         this.handleCellClick = this.handleCellClick.bind(this)
+        this.whoIsCurrentPlayer = this.whoIsCurrentPlayer.bind(this)
     }
 
-
     handleCellClick(id){   
-
+        const symbolOfCurrentPlayer = this.whoIsCurrentPlayer().symbol
+        
         const newCells = this.state.cells.map(cell => {
-            return (cell.id === id) ? {...cell, isPlayable: false, value: 'X'} : cell;
+            return (cell.id === id) ? {...cell, isPlayable: false, value: `${symbolOfCurrentPlayer}`} : cell;
         });
-
         this.setState({cells: newCells})
+    }
+    
+    whoIsCurrentPlayer(){
+        for (let player of this.state.players) {
+            if (player.isCurrentPlayer === true) {
+                return player; 
+            }
+        }
     }
 
     render(){
@@ -32,6 +39,7 @@ class GameBox extends Component{
 
         return(
             <Fragment>
+    <h2> Which player is playing? {this.whoIsCurrentPlayer().id}</h2>
             <p>HELLO I AM THE BOX</p>
             {createCells}
             </Fragment>
